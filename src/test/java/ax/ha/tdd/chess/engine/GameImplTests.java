@@ -1,11 +1,9 @@
 package ax.ha.tdd.chess.engine;
 
-import ax.ha.tdd.chess.engine.pieces.Pawn;
-import ax.ha.tdd.chess.engine.pieces.PieceType;
+import ax.ha.tdd.chess.console.ChessboardWriter;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameImplTests {
 
@@ -14,40 +12,94 @@ public class GameImplTests {
     @Test
     public void playerWhiteToMoveFirstTime(){
 
-        boolean isNewGame = true;
-        int countMoves = 0;
-        GameImpl game = new GameImpl(countMoves, isNewGame);
+        //Arrange
+        Game game = new GameImpl();
+
+        //Act
+
+        //Assert
         assertEquals(Player.WHITE, game.getPlayerToMove());
 
     }
 
 
     @Test
-    public void playerWhiteToMove(){
+    public void playerWhiteToMoveAfterTwoTurns(){
+        //Arrange
+        Game game = new GameImpl();
 
-        int countMoves = 6;
-        boolean isNewGame = true;
-        GameImpl game = new GameImpl(countMoves, isNewGame);
+        //Act
+        game.move("a2-a3");
+        game.move("g7-g6");
+
+        //Assert
         assertEquals(Player.WHITE, game.getPlayerToMove());
     }
 
     @Test
-    public void playerBlackToMove(){
+    public void playerBlackToMoveAfterOneTurn(){
 
-        int countMoves = 5;
-        boolean isNewGame = false;
-        GameImpl game = new GameImpl(countMoves, isNewGame);
+        GameImpl game = new GameImpl();
+        game.move("a2-a3");
+
         assertEquals(Player.BLACK, game.getPlayerToMove());
     }
 
     @Test
     public void getLastMove(){
-
-        String move = "a1-a2";
-        String lastMove = "Last move was successful (a1-a2)";
-        boolean isNewGame = false;
-        GameImpl game = new GameImpl(move, isNewGame);
+        //Arrange
+        String move = "a2-a3";
+        String lastMove = "Last move was successful (a2-a3)";
+        GameImpl game = new GameImpl();
+        //Act
+        game.move(move);
+        //Assert
         assertEquals(lastMove, game.getLastMoveResult());
+    }
 
+    @Test
+    public void testWhiteMovePawnFirstTurn() {
+        //Arrange
+        Game game = new GameImpl();
+        //Act
+        game.move("a2-a3");
+        //Assert
+        assertTrue(game.getBoard().getPieceAt(new Square("a3")) != null);
+        assertTrue(game.getBoard().getPieceAt(new Square("a2")) == null);
+    }
+
+    @Test
+    public void testWhiteMovePawnFirstTurnNotWorking() {
+        //Arrange
+        Game game = new GameImpl();
+        //Act
+        game.move("a2-a5");
+        //Assert
+        assertNull(game.getBoard().getPieceAt(new Square("a5")));
+        assertNotNull(game.getBoard().getPieceAt(new Square("a2")));
+    }
+
+    @Test
+    public void testSwitchPlayerWorks(){
+        //Arrange
+        Game game = new GameImpl();
+        //Act
+        game.move("d2-d4");
+        game.move("e2-e3");
+        //Assert
+        System.out.println(new ChessboardWriter().print(game.getBoard()));
+        assertEquals(Player.BLACK, game.getPlayerToMove());
+    }
+
+    //@Test
+    public void testWhitePwanMoveNotFirst(){
+        //Arrange
+        Game game = new GameImpl();
+        //Act
+        game.move("d2-d4");
+        game.move("f7-f6");
+        game.move("d4-d5");
+        assertTrue(game.getBoard().getPieceAt(new Square("d5")) != null);
+        assertTrue(game.getBoard().getPieceAt(new Square("d4")) == null);
     }
 }

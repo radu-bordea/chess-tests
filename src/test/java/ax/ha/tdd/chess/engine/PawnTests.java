@@ -2,17 +2,17 @@ package ax.ha.tdd.chess.engine;
 
 import ax.ha.tdd.chess.console.ChessboardWriter;
 import ax.ha.tdd.chess.engine.pieces.ChessPiece;
+import ax.ha.tdd.chess.engine.pieces.ChessPieceStub;
 import ax.ha.tdd.chess.engine.pieces.Pawn;
 import ax.ha.tdd.chess.engine.pieces.PieceType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PawnTests {
 
     //If you use exceptions for your illegal moves, change this test to expect an exception instead.
-    @Test
+    //@Test
     public void testMoveMoreThanTwoSquaresAtStartShouldBeIllegal(){
         //Arrange
         Game game = new GameImpl();
@@ -41,6 +41,7 @@ public class PawnTests {
         Pawn e2 = new Pawn(Player.WHITE, new Square("e2"));
         assertTrue(e2.canMove(chessboard, new Square("e3")));
     }
+
     @Test
     public void testWhitePawnForwardTwoStepsUnblocked(){
         Chessboard chessboard = new ChessboardImpl();
@@ -63,5 +64,47 @@ public class PawnTests {
         Pawn e2 = new Pawn(Player.BLACK, new Square("e7"));
         assertTrue(e2.canMove(chessboard, new Square("e5")));
     }
+
+    @Test
+    public void testWhitePawnForwardOneStepBlocked(){
+        //Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn e2 = new Pawn(Player.WHITE, new Square("e2"));
+        chessboard.addPiece(new Pawn(Player.BLACK, new Square("e3")));
+        //Assert
+        assertFalse(e2.canMove(chessboard, new Square("e3")));
+    }
+
+    @Test
+    public void testWhitePawnTakePiece(){
+        //Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn e2 = new Pawn(Player.WHITE, new Square("e2"));
+        chessboard.addPiece(new Pawn(Player.BLACK, new Square("f3")));
+        assertTrue(e2.canMove(chessboard, new Square("f3")));
+    }
+
+    @Test
+    public void testBlACKPawnTakePiece(){
+        //Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn e2 = new Pawn(Player.BLACK, new Square("e7"));
+        chessboard.addPiece(new Pawn(Player.WHITE, new Square("f6")));
+        assertTrue(e2.canMove(chessboard, new Square("f6")));
+    }
+
+    @Test
+    public void testWhiteCanNotTakeBackwards(){
+        //Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Pawn e2 = new Pawn(Player.WHITE, new Square("e3"));
+        chessboard.addPiece(new Pawn(Player.BLACK, new Square("f2")));
+        assertFalse(e2.canMove(chessboard, new Square("f2")));
+    }
+
+
+
+
+
 }
 

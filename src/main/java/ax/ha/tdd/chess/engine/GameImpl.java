@@ -7,28 +7,17 @@ public class GameImpl implements Game{
 
     Player currentPlayer;
     int countMoves = 0;
-    boolean isNewGame = true;
     String lastMove = null;
 
-    public GameImpl(Player currentPlayer, int countMoves){
-        this.currentPlayer = currentPlayer;
-        this.countMoves = countMoves;
-    }
-
-    public GameImpl(int countMoves, boolean isNewGame){
-        this.countMoves = countMoves;
-        this.isNewGame = isNewGame;
-    }
-
-    public GameImpl(String move, boolean isNewGame) {
-        this.lastMove = move;
-        this.isNewGame = isNewGame;
-    }
-
-    public GameImpl(){}
     final ChessboardImpl board = ChessboardImpl.startingBoard();
 
 
+    boolean isNewGame() {
+        if(countMoves == 0){
+            return true;
+        }
+        return false;
+    }
 
     //Feel free to delete this stuff. Just for initial testing.
 
@@ -37,7 +26,7 @@ public class GameImpl implements Game{
     public Player getPlayerToMove() {
         //TODO this should reflect the current state.
 
-        if(isNewGame){
+        if(isNewGame()){
             currentPlayer = Player.WHITE;
         }else{
             if(countMoves%2 == 0){
@@ -58,7 +47,7 @@ public class GameImpl implements Game{
     public String getLastMoveResult() {
         //TODO this should be used to show the player what happened
         //Illegal move, correct move, e2 moved to e4 etc. up to you!
-        if (isNewGame) {
+        if (isNewGame()) {
             return "Game hasn't begun";
         }
         return String.format("Last move was successful (%s)", lastMove);
@@ -66,13 +55,20 @@ public class GameImpl implements Game{
 
     @Override
     public void move(String move) {
-        countMoves++;
         //TODO this should trigger your move logic.
         String[] position = move.split("-");
-        ChessPieceBase chess;
         //chess.canMove()
-        isNewGame = false;
         lastMove = move;
+        ChessPiece temp = board.getPieceAt(new Square(position[0]));
+        if(temp.getPlayer().equals(getPlayerToMove())){
+            if(temp.canMove(board, new Square(position[1]))){
+                temp.move(new Square(position[1]));
+                board.addPiece(temp);
+                board.removePieceAt(new Square(position[0]));
+                countMoves++;
+            }
+
+        }
 
         System.out.println("Player tried to perform move: " + move);
     }

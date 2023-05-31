@@ -63,4 +63,9 @@ public abstract class ChessPieceBase implements ChessPiece {
     public String toString() {
         return getPlayer().name() + " " + getClass().getSimpleName();
     }
+
+    @Override
+    public void move(final Square destination) {
+        this.location = destination;
+    }
 }

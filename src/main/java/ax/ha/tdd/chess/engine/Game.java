@@ -8,6 +8,12 @@ public interface Game {
     Player getPlayerToMove();
 
     /**
+     * Take a string representing the next move,
+     * and apply it to the board. Do nothing if the move is illegal
+     */
+    void move(String move);
+
+    /**
      * Current board state
      */
     Chessboard getBoard();
@@ -18,10 +24,6 @@ public interface Game {
      */
     String getLastMoveResult();
 
-    /**
-     * Take a string representing the next move,
-     * and apply it to the board. Do nothing if the move is illegal
-     */
-    void move(String move);
+
 
 }

@@ -25,4 +25,6 @@ public interface ChessPiece {
 
     boolean canMove(final Chessboard chessboard, final Square destination);
 
+    void move(final Square destination);
+
 }
