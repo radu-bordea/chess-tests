@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KnightTests {
-    //@Test
+    @Test
     public void testMoveMoreThanTwoSquaresAtStartShouldBeIllegal() {
         //Arrange
         Game game = new GameImpl();
@@ -34,11 +34,57 @@ public class KnightTests {
 
 
     @Test
-    public void testWhiteKnightMoveUnblocked(){
+    public void testWhiteKnightMoveAtStartUnblocked(){
         //Here's a lower level test, we just check that the internal logic of the pawn is correct.
         //We should be allowed to move one step forward to an empty square
         Chessboard chessboard = new ChessboardImpl();
-        Knight b7 = new Knight(Player.WHITE, new Square("b7"));
-        assertTrue(b7.canMove(chessboard, new Square("a5")));
+        Knight b2 = new Knight(Player.WHITE, new Square("b2"));
+        assertTrue(b2.canMove(chessboard, new Square("a3")));
     }
+
+    @Test
+    public void testBlackKnightMoveAtStartUnblocked(){
+        //Here's a lower level test, we just check that the internal logic of the pawn is correct.
+        //We should be allowed to move one step forward to an empty square
+        Chessboard chessboard = new ChessboardImpl();
+        Knight b8 = new Knight(Player.WHITE, new Square("b8"));
+        assertTrue(b8.canMove(chessboard, new Square("a6")));
+    }
+
+
+    @Test
+    public void testWhiteKnightMoveAnytimeUnblocked(){
+        //Here's a lower level test, we just check that the internal logic of the pawn is correct.
+        //We should be allowed to move one step forward to an empty square
+        Chessboard chessboard = new ChessboardImpl();
+        Knight d4 = new Knight(Player.WHITE, new Square("d4"));
+        assertTrue(d4.canMove(chessboard, new Square("b5")));
+    }
+
+    @Test
+    public void testBlackKnightMoveAnytimeUnblocked(){
+        //Here's a lower level test, we just check that the internal logic of the pawn is correct.
+        //We should be allowed to move one step forward to an empty square
+        Chessboard chessboard = new ChessboardImpl();
+        Knight d4 = new Knight(Player.WHITE, new Square("d4"));
+        assertTrue(d4.canMove(chessboard, new Square("b5")));
+    }
+    @Test
+    public void testKnightWhiteTakePiece(){
+        //Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Knight b1 = new Knight(Player.WHITE, new Square("b1"));
+        chessboard.addPiece(new Pawn(Player.BLACK, new Square("a3")));
+        assertTrue(b1.canMove(chessboard, new Square("a3")));
+    }
+
+    @Test
+    public void testKnightBlackTakePiece(){
+        //Arrange
+        Chessboard chessboard = new ChessboardImpl();
+        Knight b1 = new Knight(Player.WHITE, new Square("b1"));
+        chessboard.addPiece(new Pawn(Player.BLACK, new Square("a3")));
+        assertTrue(b1.canMove(chessboard, new Square("a3")));
+    }
+
 }
