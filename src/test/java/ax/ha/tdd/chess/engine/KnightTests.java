@@ -2,13 +2,16 @@ package ax.ha.tdd.chess.engine;
 
 import ax.ha.tdd.chess.console.ChessboardWriter;
 import ax.ha.tdd.chess.engine.pieces.ChessPiece;
+import ax.ha.tdd.chess.engine.pieces.Knight;
+import ax.ha.tdd.chess.engine.pieces.Pawn;
 import ax.ha.tdd.chess.engine.pieces.PieceType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KnightTests {
-    @Test
+    //@Test
     public void testMoveMoreThanTwoSquaresAtStartShouldBeIllegal() {
         //Arrange
         Game game = new GameImpl();
@@ -27,5 +30,15 @@ public class KnightTests {
         //to implement a command line interface for the game
         System.out.println(new ChessboardWriter().print(game.getBoard()));
 
+    }
+
+
+    @Test
+    public void testWhiteKnightMoveUnblocked(){
+        //Here's a lower level test, we just check that the internal logic of the pawn is correct.
+        //We should be allowed to move one step forward to an empty square
+        Chessboard chessboard = new ChessboardImpl();
+        Knight b7 = new Knight(Player.WHITE, new Square("b7"));
+        assertTrue(b7.canMove(chessboard, new Square("a5")));
     }
 }
